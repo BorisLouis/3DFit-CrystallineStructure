@@ -7,23 +7,16 @@ file.ext  = '.tif';
 
 pxSize.xy = 0.052;
 pxSize.z  = 0.1;%in nm
-minDist = 5; %in pixels (min distant expected between particles)
-ROI = [8 8];
-sizeParticles = 1;
+ROI = [8 8]; % radius around the particle for fitting [xy z];
+sizeParticles = 1;% in um
 %parameter
 info.type = 'normal';%Transmission or normal 
-info.checkSync = false; %true if want to check for camera synchronization
-info.useSameROI = true;
-info.runMethod = 'load';% 'run'
-toAnalyze = 'file';%accepted: .mp4, .ome.tif, folder. (folder that contain folders of .ome.tif.
-outputFolder = 'Results'; %name of the folder to output the results
-
 %% Loading
 myMovie = Core.LocMovie3D(file,info);  
 data = myMovie.getFrame;
 
 %% Step 1 detection object detection
-detectParam = 5;
+detectParam = 5;%not needed just a placeholder parameter
 [detectedObj] = myMovie.detectObjects(data, detectParam);
 
 
@@ -38,7 +31,15 @@ myMovie.render3D(pxSize,sizeParticles)
 
 %% Step 4 analyzing crystal structure
 
+%select a section of the data
+idx = 65;
 
+h = figure(5);
+imagesc(data(:,:,idx));
+
+roi = drawrectangle(gca);
+
+myMovie.analyzeCrystalStruct(roi.Position)
 
 
 

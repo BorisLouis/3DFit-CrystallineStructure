@@ -159,6 +159,26 @@ classdef LocMovie3D < Core.Movie
 
         end
         
+        function analyzeCrystalStruct(obj,ROI)
+            
+            coord = obj.locPos;
+            
+            xlimits = [ROI(1) ROI(1)+ROI(3)];
+            ylimits = [ROI(2) ROI(2)+ROI(4)];
+            
+            coord(or(coord.col<xlimits(1), coord.col>xlimits(2)),:)= [];
+            coord(or(coord.row<ylimits(1), coord.row>ylimits(2)),:)= [];
+            
+            figure
+            scatter3(coord.col,coord.row,coord.z)
+            
+            
+            
+            
+            
+            
+        end
+        
         
     end
     
